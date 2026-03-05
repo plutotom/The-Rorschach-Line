@@ -167,6 +167,20 @@ button {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Embed variant: smaller header, compact for iframe */
+.embed-shell .embed-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+.embed-shell .embed-header {
+  margin-bottom: 0;
+}
+.embed-shell.app-container {
+  padding: 1rem 1rem 2rem;
+  gap: 1.5rem;
+}
+
 @media (max-width: 768px) {
   .header h1 {
     font-size: 2.5rem;

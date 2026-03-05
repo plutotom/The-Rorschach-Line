@@ -1,16 +1,45 @@
-# React + Vite
+# Happiness Timeline
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Chart your perceived happiness across your lifetime. Choose your preferred interaction method to map your personal peaks and valleys.
 
-Currently, two official plugins are available:
+## Development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+pnpm install
+pnpm run dev
+```
 
-## React Compiler
+## Build
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Command | Output |
+|--------|--------|
+| `pnpm run build` | Single-file app → `dist/index.html` |
+| `pnpm run build:embed` | App + all embed variants + paste-ready fragments → `dist/index.html` and `dist/embed/*.html`, `dist/embed/*-paste.html` |
+| `EMBED=<name> pnpm run build` | One embed only (e.g. `EMBED=sliders`) → `dist/embed/<name>.html` |
 
-## Expanding the ESLint configuration
+## Embedding on a survey site
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Each view (Classic, Control Nodes, Clinical Nodes, Decade Sliders, and the mobile variants) can be exported as **standalone HTML** for embedding.
+
+1. **Build embeds:**  
+   `pnpm run build:embed`
+
+2. **Copy-paste into an HTML block:**  
+   Open any `dist/embed/<variant>-paste.html`, select all, copy, and paste into your survey’s HTML/custom content block. The fragment is scoped so it won’t affect the host page.  
+   If the graph doesn’t appear, the site may be blocking scripts; host the full `.html` file and embed it in an iframe instead.
+
+3. **Iframe (hosted file):**  
+   Use the full-page files (e.g. `dist/embed/classic.html`) as the `src` of an iframe once they’re hosted.
+
+### Embed variants
+
+- `classic` — Classic Paint
+- `nodes` — Control Nodes
+- `clinical-nodes` — Clinical Nodes
+- `sliders` — Decade Sliders
+- `mobile-pan`, `mobile-tooltip`, `mobile-snap`, `mobile-orient`, `mobile-haptic` — mobile interaction variants
+
+## Tech
+
+- React 19 + Vite 7
+- [vite-plugin-singlefile](https://github.com/nickvdyck/vite-plugin-singlefile) for self-contained HTML builds
