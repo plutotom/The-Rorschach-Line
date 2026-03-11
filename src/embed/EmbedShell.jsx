@@ -4,7 +4,7 @@ import React, { useState } from "react";
  * Minimal wrapper for embedding a single graph variant on a survey site.
  * Holds data/setData and renders one graph + optional reset. No view toggles.
  */
-export default function EmbedShell({ title }) {
+export default function EmbedShell({ title, Graph }) {
   const [data, setData] = useState(() => Array.from({ length: 101 }, () => 50));
 
   return (
