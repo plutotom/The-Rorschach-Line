@@ -33,4 +33,7 @@ for (const name of embedEntries) {
 }
 console.log("Embed builds done. See dist/embed/*.html");
 console.log("Creating paste-ready fragments...");
-execSync("node scripts/make-paste-fragments.js", { cwd: root, stdio: "inherit" });
+execSync("node scripts/make-paste-fragments.js", {
+  cwd: root,
+  stdio: "inherit",
+});
