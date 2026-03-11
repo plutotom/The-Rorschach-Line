@@ -25,7 +25,7 @@ const embedEntries = [
 
 for (const name of embedEntries) {
   console.log(`Building embed: ${name}...`);
-  execSync("pnpm exec vite build", {
+  execSync("npx vite build", {
     cwd: root,
     stdio: "inherit",
     env: { ...process.env, EMBED: name },
