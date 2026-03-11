@@ -5,7 +5,7 @@
  */
 
 import { execSync } from "child_process";
-import { copyFileSync, mkdirSync, existsSync } from "fs";
+import { copyFileSync, existsSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 
@@ -13,17 +13,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
 const distEmbed = join(root, "dist", "embed");
 
+/** Embeds that have both embed/*.html and src/embed/*.jsx (HTML build). */
 const embedEntries = [
   "classic",
   "nodes",
   "clinical-nodes",
   "sliders",
-  "mobile-pan",
-  "mobile-tooltip",
-  "mobile-snap",
-  "mobile-orient",
-  "mobile-haptic",
 ];
+
+/** Embeds that have src/embed/*-script.jsx (IIFE script build for Qualtrics). */
+const scriptEmbedEntries = ["classic", "clinical-nodes", "sliders"];
 
 for (const name of embedEntries) {
   console.log(`Building embed: ${name}...`);
@@ -40,7 +39,7 @@ execSync("node scripts/make-paste-fragments.js", {
   stdio: "inherit",
 });
 console.log("Building script-tag embeds (IIFE .js for Qualtrics)...");
-for (const name of embedEntries) {
+for (const name of scriptEmbedEntries) {
   execSync("pnpm exec vite build --config vite.config.script.js", {
     cwd: root,
     stdio: "inherit",

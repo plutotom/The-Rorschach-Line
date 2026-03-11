@@ -8,15 +8,10 @@ const embedEntries = [
   "nodes",
   "clinical-nodes",
   "sliders",
-  "mobile-pan",
-  "mobile-tooltip",
-  "mobile-snap",
-  "mobile-orient",
-  "mobile-haptic",
 ];
 
 // Single-file plugin only works with one input. Use EMBED=<name> to build one embed (e.g. EMBED=classic pnpm build).
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode: _mode }) => {
   const embed = process.env.EMBED;
   const isEmbedBuild = embed && embedEntries.includes(embed);
 

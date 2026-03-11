@@ -18,11 +18,6 @@ const embedEntries = [
   "nodes",
   "clinical-nodes",
   "sliders",
-  "mobile-pan",
-  "mobile-tooltip",
-  "mobile-snap",
-  "mobile-orient",
-  "mobile-haptic",
 ];
 
 function extractFragment(fullHtml) {
