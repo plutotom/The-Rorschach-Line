@@ -5,11 +5,13 @@
  */
 
 import { execSync } from "child_process";
+import { copyFileSync, mkdirSync, existsSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
+const distEmbed = join(root, "dist", "embed");
 
 const embedEntries = [
   "classic",
@@ -37,3 +39,19 @@ execSync("node scripts/make-paste-fragments.js", {
   cwd: root,
   stdio: "inherit",
 });
+console.log("Building script-tag embeds (IIFE .js for Qualtrics)...");
+for (const name of embedEntries) {
+  execSync("pnpm exec vite build --config vite.config.script.js", {
+    cwd: root,
+    stdio: "inherit",
+    env: { ...process.env, EMBED: name },
+  });
+}
+console.log("Script embeds done. See dist/embed/*.js");
+if (existsSync(distEmbed)) {
+  copyFileSync(
+    join(root, "embed", "script-tag-test.html"),
+    join(distEmbed, "script-tag-test.html"),
+  );
+  console.log("Test page: dist/embed/script-tag-test.html (open via pnpm preview)");
+}

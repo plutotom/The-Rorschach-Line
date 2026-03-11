@@ -14,7 +14,7 @@ pnpm run dev
 | Command | Output |
 |--------|--------|
 | `pnpm run build` | Single-file app → `dist/index.html` |
-| `pnpm run build:embed` | App + all embed variants + paste-ready fragments → `dist/index.html` and `dist/embed/*.html`, `dist/embed/*-paste.html` |
+| `pnpm run build:embed` | App + all embed variants + paste-ready fragments + script-tag .js → `dist/index.html`, `dist/embed/*.html`, `dist/embed/*-paste.html`, `dist/embed/*.js` |
 | `EMBED=<name> pnpm run build` | One embed only (e.g. `EMBED=sliders`) → `dist/embed/<name>.html` |
 
 ## Embedding on a survey site
@@ -30,6 +30,14 @@ Each view (Classic, Control Nodes, Clinical Nodes, Decade Sliders, and the mobil
 
 3. **Iframe (hosted file):**  
    Use the full-page files (e.g. `dist/embed/classic.html`) as the `src` of an iframe once they’re hosted.
+
+4. **Script tag (e.g. Qualtrics):**  
+   When the host blocks iframes, paste a placeholder div and the script URL. The script injects styles and mounts the graph into `#rorschach-root` (or creates it before the script). Host the `.js` files (e.g. from `dist/embed/`) and use:
+   ```html
+   <div id="rorschach-root"></div>
+   <script src="https://your-host/embed/classic.js"></script>
+   ```
+   Replace `classic` with any variant name (`nodes`, `sliders`, etc.). Optional: omit the div and the script will create the container.
 
 ### Embed variants
 
