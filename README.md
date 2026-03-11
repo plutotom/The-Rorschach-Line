@@ -39,6 +39,15 @@ Each view (Classic, Control Nodes, Clinical Nodes, Decade Sliders, and the mobil
    ```
    Replace `classic` with any variant name (`nodes`, `sliders`, etc.). Optional: omit the div and the script will create the container.
 
+   **Capturing data in Qualtrics:**  
+   The embed automatically writes the drawn line into Qualtrics Embedded Data when it detects the Qualtrics survey environment. To capture it:
+   1. In **Survey flow**, add an **Embedded Data** element and set its field name to **`RorschachLine`** (no spaces). You can place it at the start of the block or before the question that contains the embed.
+   2. Add your question (e.g. **Text / Graphic** or **Descriptive Text**) and paste the HTML above into the question’s HTML or rich-content area.
+   3. As the respondent draws, the graph pushes the current data (debounced). When they click **Next**, the latest value is also pushed so Qualtrics records it. The stored value is a JSON string: an array of 101 numbers (happiness 0–100 for ages 0–100), e.g. `[50,50,52,...]`.
+   4. **Optional (if data is missing):** In the question’s **Add OnPageSubmit** JavaScript, add:  
+      `Qualtrics.SurveyEngine.setEmbeddedData('RorschachLine', JSON.stringify(window.RorschachLine.getData()));`  
+      so the value is set right before the page submits.
+
 ### Embed variants
 
 - `classic` — Classic Paint
