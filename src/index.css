@@ -181,6 +181,69 @@ button {
   gap: 1.5rem;
 }
 
+/* Load pasted line (base page only) */
+.paste-line-section {
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.paste-line-label {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.paste-line-textarea {
+  width: 100%;
+  max-width: 600px;
+  min-height: 4.5rem;
+  padding: 0.75rem 1rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.875rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: var(--text-main);
+  resize: vertical;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.paste-line-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.paste-line-textarea:focus {
+  outline: none;
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+.paste-line-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.paste-line-btn {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.95rem;
+}
+
+.paste-line-message {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+}
+
+.paste-line-message-ok {
+  color: var(--text-muted);
+}
+
+.paste-line-message-error {
+  color: #f87171;
+}
+
 @media (max-width: 768px) {
   .header h1 {
     font-size: 2.5rem;
