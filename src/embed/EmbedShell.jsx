@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { pushToQualtrics, QUALTRICS_EMBEDDED_DATA_KEY } from "./qualtricsBridge";
+import {
+  pushToQualtrics,
+  QUALTRICS_EMBEDDED_DATA_KEY,
+} from "./qualtricsBridge";
 
 const QUALTRICS_PUSH_DEBOUNCE_MS = 500;
 
@@ -18,7 +21,10 @@ export default function EmbedShell({ title, Graph }) {
 
   useEffect(() => {
     const push = () => {
-      pushToQualtrics(QUALTRICS_EMBEDDED_DATA_KEY, JSON.stringify(dataRef.current));
+      pushToQualtrics(
+        QUALTRICS_EMBEDDED_DATA_KEY,
+        JSON.stringify(dataRef.current),
+      );
     };
     if (pushTimeoutRef.current) clearTimeout(pushTimeoutRef.current);
     pushTimeoutRef.current = setTimeout(push, QUALTRICS_PUSH_DEBOUNCE_MS);
@@ -33,14 +39,29 @@ export default function EmbedShell({ title, Graph }) {
   // Final push on unmount (e.g. when user clicks Next) so last state is saved
   useEffect(() => {
     return () => {
-      pushToQualtrics(QUALTRICS_EMBEDDED_DATA_KEY, JSON.stringify(dataRef.current));
+      pushToQualtrics(
+        QUALTRICS_EMBEDDED_DATA_KEY,
+        JSON.stringify(dataRef.current),
+      );
     };
   }, []);
 
-  // Expose for Qualtrics Add OnPageSubmit: Qualtrics.SurveyEngine.setEmbeddedData('RorschachLine', JSON.stringify(window.RorschachLine.getData()))
+  // Expose for Qualtrics Add OnPageSubmit and debugging
   useEffect(() => {
     if (typeof window !== "undefined") {
-      window.RorschachLine = { getData: () => dataRef.current };
+      window.RorschachLine = {
+        getData: () => dataRef.current,
+        /** Call from console to push current data now and see if Qualtrics accepts it. Turns on debug for one push. */
+        testPush: () => {
+          window.RorschachLineDebug = true;
+          const ok = pushToQualtrics(
+            QUALTRICS_EMBEDDED_DATA_KEY,
+            JSON.stringify(dataRef.current),
+          );
+          console.log("[RorschachLine] testPush result:", ok);
+          return ok;
+        },
+      };
     }
     return () => {
       if (typeof window !== "undefined" && window.RorschachLine) {

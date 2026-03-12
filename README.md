@@ -48,6 +48,15 @@ Each view (Classic, Control Nodes, Clinical Nodes, Decade Sliders, and the mobil
       `Qualtrics.SurveyEngine.setEmbeddedData('RorschachLine', JSON.stringify(window.RorschachLine.getData()));`  
       so the value is set right before the page submits.
 
+   **Debugging (Qualtrics not getting data):**
+   - In the question’s **Add OnLoad** (or in the browser console before the graph loads), set `window.RorschachLineDebug = true`, then open DevTools → Console. You should see either:
+     - `[RorschachLine] setEmbeddedData ok via window` (or `window.parent` / `window.top`) when it works, or
+     - `[RorschachLine] Qualtrics not found on window, window.parent, or window.top` if the API wasn’t found.
+   - From the console you can run `window.RorschachLine.testPush()` to push the current line once and see whether Qualtrics was found.
+   - Confirm in **Survey flow** that an **Embedded Data** field named exactly **RorschachLine** exists (same spelling, no space).
+   - If the embed runs inside an iframe, the script tries `window.parent` and `window.top` automatically; the debug log shows which one was used.
+   - Use the **OnPageSubmit** fallback (step 4 above) so the value is set right before submit; in Console check that `window.RorschachLine.getData()` returns an array of 101 numbers.
+
 ### Embed variants
 
 - `classic` — Classic Paint
