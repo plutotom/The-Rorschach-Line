@@ -3,11 +3,17 @@ import { createRoot } from "react-dom/client";
 import "../index.css";
 import EmbedShell from "./EmbedShell";
 import ControlPointsGraph from "../ControlPointsGraph";
+import { readEmbedOptions } from "./readEmbedOptions";
 
-createRoot(document.getElementById("root")).render(
+const root = document.getElementById("root");
+const opts = readEmbedOptions(root);
+
+createRoot(root).render(
   <StrictMode>
     <EmbedShell
-      title="Happiness Timeline (Control Nodes)"
+      title={opts.title ?? "Happiness Timeline (Control Nodes)"}
+      axisXLabel={opts.xAxisLabel}
+      axisYLabel={opts.yAxisLabel}
       Graph={ControlPointsGraph}
     />
   </StrictMode>,

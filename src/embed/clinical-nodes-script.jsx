@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import cssText from "../index.css?inline";
 import EmbedShell from "./EmbedShell";
 import ClinicalNodesGraph from "../ClinicalNodesGraph";
+import { readEmbedOptions } from "./readEmbedOptions";
 
 const style = document.createElement("style");
 style.textContent = cssText;
@@ -15,8 +16,15 @@ if (!container) {
   document.currentScript.parentNode.insertBefore(container, document.currentScript);
 }
 
+const opts = readEmbedOptions(container);
+
 createRoot(container).render(
   <StrictMode>
-    <EmbedShell title="Happiness Timeline (Clinical Nodes)" Graph={ClinicalNodesGraph} />
+    <EmbedShell
+      title={opts.title ?? "Happiness Timeline (Clinical Nodes)"}
+      axisXLabel={opts.xAxisLabel}
+      axisYLabel={opts.yAxisLabel}
+      Graph={ClinicalNodesGraph}
+    />
   </StrictMode>,
 );

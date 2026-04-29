@@ -12,14 +12,22 @@ const QUALTRICS_PUSH_DEBOUNCE_MS = 500;
  * When running inside Qualtrics, pushes the current line data to Embedded Data
  * (key: RorschachLine) so the survey can capture what the user drew.
  */
-// eslint-disable-next-line no-unused-vars -- Graph is used as <Graph /> in JSX
-export default function EmbedShell({ title, Graph }) {
+export default function EmbedShell({
+  title,
+  // eslint-disable-next-line no-unused-vars -- used as JSX <Graph />; alias satisfies no-unused-vars when JSX is not counted
+  Graph,
+  axisXLabel,
+  axisYLabel,
+}) {
   const [data, setData] = useState(() => Array.from({ length: 101 }, () => 50));
   /** Increments on Reset so node/slider graphs can clear local state (see ClinicalNodesGraph). */
   const [embedResetKey, setEmbedResetKey] = useState(0);
   const pushTimeoutRef = useRef(null);
   const dataRef = useRef(data);
-  dataRef.current = data;
+
+  useEffect(() => {
+    dataRef.current = data;
+  }, [data]);
 
   useEffect(() => {
     const push = () => {
@@ -85,6 +93,8 @@ export default function EmbedShell({ title, Graph }) {
             data={data}
             setData={setData}
             embedResetKey={embedResetKey}
+            axisXLabel={axisXLabel}
+            axisYLabel={axisYLabel}
           />
         </div>
         <div className="controls">

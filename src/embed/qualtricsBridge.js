@@ -16,7 +16,7 @@ function isDebug() {
       (window.parent && window.parent !== window && window.parent.RorschachLineDebug) ||
       (window.top && window.top.RorschachLineDebug)
     );
-  } catch (_) {
+  } catch {
     return false;
   }
 }
@@ -34,7 +34,7 @@ function findQualtrics() {
       if (w && w.Qualtrics && w.Qualtrics.SurveyEngine && typeof w.Qualtrics.SurveyEngine.setEmbeddedData === "function") {
         return { Q: w.Qualtrics, which: label };
       }
-    } catch (_) {
+    } catch {
       // cross-origin or no access
     }
   }

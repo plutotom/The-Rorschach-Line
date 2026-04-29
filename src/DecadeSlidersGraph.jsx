@@ -3,7 +3,13 @@ import { getInterpolatedData } from './math';
 
 const DEFAULT_SLIDER_VALUES = [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50];
 
-const DecadeSlidersGraph = ({ data, setData, embedResetKey }) => {
+const DecadeSlidersGraph = ({
+  data,
+  setData,
+  embedResetKey,
+  axisXLabel = "CHANNELS (AGE)",
+  axisYLabel = "MASTER OUT",
+}) => {
   const svgRef = useRef(null);
   const [sliderValues, setSliderValues] = useState(() => [
     ...DEFAULT_SLIDER_VALUES,
@@ -18,6 +24,7 @@ const DecadeSlidersGraph = ({ data, setData, embedResetKey }) => {
 
   useEffect(() => {
     if (embedResetKey == null || embedResetKey === 0) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- embed reset signal from EmbedShell
     setSliderValues([...DEFAULT_SLIDER_VALUES]);
   }, [embedResetKey]);
 
@@ -170,8 +177,8 @@ const DecadeSlidersGraph = ({ data, setData, embedResetKey }) => {
       })}
 
       {/* Background Labels */}
-      <text x="-55" y="250" transform="rotate(-90 -55 250)" fill="#71717a" fontSize="16" fontWeight="900" textAnchor="middle" letterSpacing="4">MASTER OUT</text>
-      <text x="500" y="575" fill="#71717a" fontSize="16" fontWeight="900" textAnchor="middle" letterSpacing="4">CHANNELS (AGE)</text>
+      <text x="-55" y="250" transform="rotate(-90 -55 250)" fill="#71717a" fontSize="16" fontWeight="900" textAnchor="middle" letterSpacing="4">{axisYLabel}</text>
+      <text x="500" y="575" fill="#71717a" fontSize="16" fontWeight="900" textAnchor="middle" letterSpacing="4">{axisXLabel}</text>
 
       {/* Segmented LED Volume Meters Behind Sliders */}
       {sliderValues.map((val, i) => {

@@ -7,7 +7,13 @@ const DEFAULT_NODES = [
   { id: 3, x: 100, y: 50 },
 ];
 
-const ControlPointsGraph = ({ data, setData, embedResetKey }) => {
+const ControlPointsGraph = ({
+  data,
+  setData,
+  embedResetKey,
+  axisXLabel = "LIFESPAN_VECTOR",
+  axisYLabel = "AMPLITUDE",
+}) => {
   const svgRef = useRef(null);
   const [nodes, setNodes] = useState(() =>
     DEFAULT_NODES.map((n) => ({ ...n })),
@@ -22,6 +28,7 @@ const ControlPointsGraph = ({ data, setData, embedResetKey }) => {
 
   useEffect(() => {
     if (embedResetKey == null || embedResetKey === 0) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- embed reset signal from EmbedShell
     setNodes(DEFAULT_NODES.map((n) => ({ ...n })));
   }, [embedResetKey]);
 
@@ -283,7 +290,7 @@ const ControlPointsGraph = ({ data, setData, embedResetKey }) => {
         textAnchor="middle"
         letterSpacing="4"
       >
-        AMPLITUDE
+        {axisYLabel}
       </text>
       <text
         x="500"
@@ -294,7 +301,7 @@ const ControlPointsGraph = ({ data, setData, embedResetKey }) => {
         textAnchor="middle"
         letterSpacing="4"
       >
-        LIFESPAN_VECTOR
+        {axisXLabel}
       </text>
 
       {/* Active crosshairs */}

@@ -7,7 +7,13 @@ const DEFAULT_NODES = [
   { id: 3, x: 100, y: 50 },
 ];
 
-const ClinicalNodesGraph = ({ data, setData, embedResetKey }) => {
+const ClinicalNodesGraph = ({
+  data,
+  setData,
+  embedResetKey,
+  axisXLabel = "Age",
+  axisYLabel = "Happiness",
+}) => {
   const svgRef = useRef(null);
   const [nodes, setNodes] = useState(() => DEFAULT_NODES.map((n) => ({ ...n })));
   const [draggingNodeId, setDraggingNodeId] = useState(null);
@@ -18,8 +24,10 @@ const ClinicalNodesGraph = ({ data, setData, embedResetKey }) => {
     setData(interpolated);
   }, [nodes, setData]);
 
+  /* Reset local nodes when embed shell bumps embedResetKey (parent data alone does not clear nodes). */
   useEffect(() => {
     if (embedResetKey == null || embedResetKey === 0) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- embed reset signal from EmbedShell
     setNodes(DEFAULT_NODES.map((n) => ({ ...n })));
   }, [embedResetKey]);
 
@@ -174,8 +182,8 @@ const ClinicalNodesGraph = ({ data, setData, embedResetKey }) => {
       })}
 
       {/* Axis Titles */}
-      <text x="-50" y="250" transform="rotate(-90 -50 250)" fill={colorSecondary} fontSize="13" fontWeight="500" textAnchor="middle" letterSpacing="1">Happiness</text>
-      <text x="500" y="555" fill={colorSecondary} fontSize="13" fontWeight="500" textAnchor="middle" letterSpacing="1">Age</text>
+      <text x="-50" y="250" transform="rotate(-90 -50 250)" fill={colorSecondary} fontSize="13" fontWeight="500" textAnchor="middle" letterSpacing="1">{axisYLabel}</text>
+      <text x="500" y="555" fill={colorSecondary} fontSize="13" fontWeight="500" textAnchor="middle" letterSpacing="1">{axisXLabel}</text>
 
       {/* Active crosshairs (Simple dotted lines, no fancy boxes) */}
       {activeNode && (

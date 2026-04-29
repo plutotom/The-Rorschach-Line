@@ -1,11 +1,20 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import '../index.css';
-import EmbedShell from './EmbedShell';
-import ClinicalNodesGraph from '../ClinicalNodesGraph';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "../index.css";
+import EmbedShell from "./EmbedShell";
+import ClinicalNodesGraph from "../ClinicalNodesGraph";
+import { readEmbedOptions } from "./readEmbedOptions";
 
-createRoot(document.getElementById('root')).render(
+const root = document.getElementById("root");
+const opts = readEmbedOptions(root);
+
+createRoot(root).render(
   <StrictMode>
-    <EmbedShell title="Happiness Timeline (Clinical Nodes)" Graph={ClinicalNodesGraph} />
+    <EmbedShell
+      title={opts.title ?? "Happiness Timeline (Clinical Nodes)"}
+      axisXLabel={opts.xAxisLabel}
+      axisYLabel={opts.yAxisLabel}
+      Graph={ClinicalNodesGraph}
+    />
   </StrictMode>,
 );

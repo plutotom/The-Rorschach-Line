@@ -7,6 +7,13 @@
   </head>
   <body>
     <p>Below: graph loaded via script tag (no iframe).</p>
+    <p>Optional labels (remove or edit <code>window.RorschachLineEmbed</code> to try defaults):</p>
+    <script>
+      window.RorschachLineEmbed = {
+        xAxisLabel: "Lifetime (years)",
+        yAxisLabel: "Well-being",
+      };
+    </script>
     <div id="rorschach-root"></div>
     <script src="classic.js"></script>
   </body>

@@ -1,14 +1,22 @@
 import React, { useRef, useState, useCallback, useEffect } from "react";
 
-const InteractiveGraph = ({ data, setData, embedResetKey }) => {
+const InteractiveGraph = ({
+  data,
+  setData,
+  embedResetKey,
+  axisXLabel = "AGE",
+  axisYLabel = "HAPPINESS",
+}) => {
   const svgRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [lastCoord, setLastCoord] = useState(null);
 
   useEffect(() => {
     if (embedResetKey == null || embedResetKey === 0) return;
+    /* eslint-disable react-hooks/set-state-in-effect -- embed reset signal from EmbedShell */
     setLastCoord(null);
     setIsDrawing(false);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [embedResetKey]);
 
   const updateDataAtPointer = useCallback(
@@ -174,7 +182,7 @@ const InteractiveGraph = ({ data, setData, embedResetKey }) => {
         textAnchor="middle"
         letterSpacing="1"
       >
-        HAPPINESS
+        {axisYLabel}
       </text>
       <text
         x="500"
@@ -185,7 +193,7 @@ const InteractiveGraph = ({ data, setData, embedResetKey }) => {
         textAnchor="middle"
         letterSpacing="1"
       >
-        AGE
+        {axisXLabel}
       </text>
 
       {/* Catch-all Area for events */}

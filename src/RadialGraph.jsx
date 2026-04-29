@@ -61,7 +61,7 @@ const RadialGraph = ({ data, setData }) => {
     });
 
     setLastCoord([age, happiness]);
-  }, [lastCoord, setData]);
+  }, [lastCoord, setData, rRange, minR, cx, cy]);
 
   const handlePointerDown = (e) => {
     e.target.setPointerCapture(e.pointerId);
