@@ -15,6 +15,8 @@ const QUALTRICS_PUSH_DEBOUNCE_MS = 500;
 // eslint-disable-next-line no-unused-vars -- Graph is used as <Graph /> in JSX
 export default function EmbedShell({ title, Graph }) {
   const [data, setData] = useState(() => Array.from({ length: 101 }, () => 50));
+  /** Increments on Reset so node/slider graphs can clear local state (see ClinicalNodesGraph). */
+  const [embedResetKey, setEmbedResetKey] = useState(0);
   const pushTimeoutRef = useRef(null);
   const dataRef = useRef(data);
   dataRef.current = data;
@@ -79,13 +81,20 @@ export default function EmbedShell({ title, Graph }) {
       )}
       <main className="main-content">
         <div className="graph-container">
-          <Graph data={data} setData={setData} />
+          <Graph
+            data={data}
+            setData={setData}
+            embedResetKey={embedResetKey}
+          />
         </div>
         <div className="controls">
           <button
             type="button"
             className="reset-btn"
-            onClick={() => setData(Array.from({ length: 101 }, () => 50))}
+            onClick={() => {
+              setData(Array.from({ length: 101 }, () => 50));
+              setEmbedResetKey((k) => k + 1);
+            }}
           >
             Reset
           </button>

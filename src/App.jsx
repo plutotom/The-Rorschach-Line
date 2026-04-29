@@ -46,6 +46,8 @@ function parseAndApplyLineData(str, setData) {
 
 function App() {
   const [data, setData] = useState(Array.from({ length: 101 }, () => 50));
+  /** Bumped on Reset so node/slider views can restore local state. */
+  const [embedResetKey, setEmbedResetKey] = useState(0);
   const [viewMode, setViewMode] = useState("classic"); // 'classic', 'nodes', 'sliders'
   const [pasteInput, setPasteInput] = useState("");
   const [pasteFeedback, setPasteFeedback] = useState(null); // { message, ok }
@@ -106,23 +108,42 @@ function App() {
       <main className="main-content">
         <div className="graph-container">
           {viewMode === "classic" && (
-            <InteractiveGraph data={data} setData={setData} />
+            <InteractiveGraph
+              data={data}
+              setData={setData}
+              embedResetKey={embedResetKey}
+            />
           )}
           {viewMode === "nodes" && (
-            <ControlPointsGraph data={data} setData={setData} />
+            <ControlPointsGraph
+              data={data}
+              setData={setData}
+              embedResetKey={embedResetKey}
+            />
           )}
           {viewMode === "clinical-nodes" && (
-            <ClinicalNodesGraph data={data} setData={setData} />
+            <ClinicalNodesGraph
+              data={data}
+              setData={setData}
+              embedResetKey={embedResetKey}
+            />
           )}
           {viewMode === "sliders" && (
-            <DecadeSlidersGraph data={data} setData={setData} />
+            <DecadeSlidersGraph
+              data={data}
+              setData={setData}
+              embedResetKey={embedResetKey}
+            />
           )}
         </div>
 
         <div className="controls">
           <button
             className="reset-btn"
-            onClick={() => setData(Array.from({ length: 101 }, () => 50))}
+            onClick={() => {
+              setData(Array.from({ length: 101 }, () => 50));
+              setEmbedResetKey((k) => k + 1);
+            }}
           >
             Reset Graph
           </button>

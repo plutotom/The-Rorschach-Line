@@ -1,9 +1,15 @@
-import React, { useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 
-const InteractiveGraph = ({ data, setData }) => {
+const InteractiveGraph = ({ data, setData, embedResetKey }) => {
   const svgRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [lastCoord, setLastCoord] = useState(null);
+
+  useEffect(() => {
+    if (embedResetKey == null || embedResetKey === 0) return;
+    setLastCoord(null);
+    setIsDrawing(false);
+  }, [embedResetKey]);
 
   const updateDataAtPointer = useCallback(
     (clientX, clientY, isFirstTouch) => {

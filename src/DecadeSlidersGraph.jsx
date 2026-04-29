@@ -1,10 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { getInterpolatedData } from './math';
 
-const DecadeSlidersGraph = ({ data, setData }) => {
+const DEFAULT_SLIDER_VALUES = [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50];
+
+const DecadeSlidersGraph = ({ data, setData, embedResetKey }) => {
   const svgRef = useRef(null);
-  const [sliderValues, setSliderValues] = useState([
-    50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50
+  const [sliderValues, setSliderValues] = useState(() => [
+    ...DEFAULT_SLIDER_VALUES,
   ]);
   const [draggingIndex, setDraggingIndex] = useState(null);
 
@@ -13,6 +15,11 @@ const DecadeSlidersGraph = ({ data, setData }) => {
     const interpolated = getInterpolatedData(nodes);
     setData(interpolated);
   }, [sliderValues, setData]);
+
+  useEffect(() => {
+    if (embedResetKey == null || embedResetKey === 0) return;
+    setSliderValues([...DEFAULT_SLIDER_VALUES]);
+  }, [embedResetKey]);
 
   const pointerToYVal = (clientY) => {
     if (!svgRef.current) return 50;

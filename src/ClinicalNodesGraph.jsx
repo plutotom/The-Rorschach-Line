@@ -1,13 +1,15 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { getInterpolatedData } from './math';
 
-const ClinicalNodesGraph = ({ data, setData }) => {
+const DEFAULT_NODES = [
+  { id: 1, x: 0, y: 50 },
+  { id: 2, x: 50, y: 50 },
+  { id: 3, x: 100, y: 50 },
+];
+
+const ClinicalNodesGraph = ({ data, setData, embedResetKey }) => {
   const svgRef = useRef(null);
-  const [nodes, setNodes] = useState([
-    { id: 1, x: 0, y: 50 },
-    { id: 2, x: 50, y: 50 },
-    { id: 3, x: 100, y: 50 }
-  ]);
+  const [nodes, setNodes] = useState(() => DEFAULT_NODES.map((n) => ({ ...n })));
   const [draggingNodeId, setDraggingNodeId] = useState(null);
   const [hoverNodeId, setHoverNodeId] = useState(null);
 
@@ -15,6 +17,11 @@ const ClinicalNodesGraph = ({ data, setData }) => {
     const interpolated = getInterpolatedData(nodes);
     setData(interpolated);
   }, [nodes, setData]);
+
+  useEffect(() => {
+    if (embedResetKey == null || embedResetKey === 0) return;
+    setNodes(DEFAULT_NODES.map((n) => ({ ...n })));
+  }, [embedResetKey]);
 
   const pointerToSVGCoords = (clientX, clientY) => {
     if (!svgRef.current) return { x: 0, y: 0 };
