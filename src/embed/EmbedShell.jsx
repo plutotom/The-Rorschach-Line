@@ -21,7 +21,7 @@ export default function EmbedShell({
 }) {
   const [data, setData] = useState(() => Array.from({ length: 101 }, () => 50));
   /** Increments on Reset so node/slider graphs can clear local state (see ClinicalNodesGraph). */
-  const [embedResetKey, setEmbedResetKey] = useState(0);
+  const [embedResetKey, _setEmbedResetKey] = useState(0);
   const pushTimeoutRef = useRef(null);
   const dataRef = useRef(data);
 
@@ -98,6 +98,7 @@ export default function EmbedShell({
           />
         </div>
         <div className="controls">
+          {/*
           <button
             type="button"
             className="reset-btn"
@@ -108,6 +109,7 @@ export default function EmbedShell({
           >
             Reset
           </button>
+          */}
         </div>
       </main>
     </div>

@@ -47,7 +47,7 @@ function parseAndApplyLineData(str, setData) {
 function App() {
   const [data, setData] = useState(Array.from({ length: 101 }, () => 50));
   /** Bumped on Reset so node/slider views can restore local state. */
-  const [embedResetKey, setEmbedResetKey] = useState(0);
+  const [embedResetKey, _setEmbedResetKey] = useState(0);
   const [viewMode, setViewMode] = useState("classic"); // 'classic', 'nodes', 'sliders'
   const [pasteInput, setPasteInput] = useState("");
   const [pasteFeedback, setPasteFeedback] = useState(null); // { message, ok }
@@ -138,6 +138,7 @@ function App() {
         </div>
 
         <div className="controls">
+          {/*
           <button
             className="reset-btn"
             onClick={() => {
@@ -147,6 +148,7 @@ function App() {
           >
             Reset Graph
           </button>
+          */}
           <button className="export-btn" onClick={() => exportToCSV(data)}>
             Download Data (CSV)
           </button>
