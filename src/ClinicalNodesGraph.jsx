@@ -16,8 +16,8 @@ const ClinicalNodesGraph = ({
   data,
   setData,
   embedResetKey,
-  axisXLabel = "Age",
-  axisYLabel = "Happiness",
+  axisXLabel = "",
+  axisYLabel = "",
 }) => {
   const svgRef = useRef(null);
   const [nodes, setNodes] = useState(() =>
