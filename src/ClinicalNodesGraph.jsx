@@ -1,10 +1,15 @@
 import React, { useRef, useState, useEffect } from "react";
 import { getInterpolatedData } from "./math";
 
+const MAX_AGE = 85;
+const GRAPH_WIDTH = 1000;
+const ageToX = (age) => (age / MAX_AGE) * GRAPH_WIDTH;
+const xToAge = (x) => (x / GRAPH_WIDTH) * MAX_AGE;
+
 const DEFAULT_NODES = [
   { id: 1, x: 0, y: 50 },
   { id: 2, x: 50, y: 50 },
-  { id: 3, x: 100, y: 50 },
+  { id: 3, x: MAX_AGE, y: 50 },
 ];
 
 const ClinicalNodesGraph = ({
@@ -39,10 +44,10 @@ const ClinicalNodesGraph = ({
     const xSVG = ((clientX - rect.left) / rect.width) * 1100 - 80;
     const ySVG = ((clientY - rect.top) / rect.height) * 600 - 20;
 
-    let age = Math.round(xSVG / 10);
+    let age = Math.round(xToAge(xSVG));
     let happiness = Math.round((500 - ySVG) / 5);
 
-    age = Math.max(0, Math.min(85, age));
+    age = Math.max(0, Math.min(MAX_AGE, age));
     happiness = Math.max(0, Math.min(100, happiness));
     return { age, happiness };
   };
@@ -66,11 +71,11 @@ const ClinicalNodesGraph = ({
           const maxX =
             currentIndex < sorted.length - 1
               ? sorted[currentIndex + 1].x - 1
-              : 100;
+              : MAX_AGE;
 
           let boundedAge = Math.max(minX, Math.min(maxX, age));
           if (currentIndex === 0) boundedAge = 0;
-          if (currentIndex === sorted.length - 1) boundedAge = 100;
+          if (currentIndex === sorted.length - 1) boundedAge = MAX_AGE;
 
           return { ...node, x: boundedAge, y: happiness };
         }
@@ -91,7 +96,7 @@ const ClinicalNodesGraph = ({
     const { age, happiness } = pointerToSVGCoords(e.clientX, e.clientY);
 
     const isTooClose = nodes.some((n) => Math.abs(n.x - age) < 3);
-    if (!isTooClose && age > 0 && age < 100) {
+    if (!isTooClose && age > 0 && age < MAX_AGE) {
       const newNode = { id: Date.now(), x: age, y: happiness };
       setNodes((prev) => [...prev, newNode].sort((a, b) => a.x - b.x));
     }
@@ -104,15 +109,16 @@ const ClinicalNodesGraph = ({
       const filtered = prev.filter((n) => n.id !== nodeId);
       if (!filtered.some((n) => n.x === 0))
         filtered.push({ id: Date.now(), x: 0, y: 50 });
-      if (!filtered.some((n) => n.x === 100))
-        filtered.push({ id: Date.now() + 1, x: 100, y: 50 });
+      if (!filtered.some((n) => n.x === MAX_AGE))
+        filtered.push({ id: Date.now() + 1, x: MAX_AGE, y: 50 });
       return filtered.sort((a, b) => a.x - b.x);
     });
   };
 
   const pathData = data
+    .slice(0, MAX_AGE + 1)
     .map((happiness, age) => {
-      const x = age * 10;
+      const x = ageToX(age);
       const y = 500 - happiness * 5;
       return `${age === 0 ? "M" : "L"} ${x} ${y}`;
     })
@@ -184,7 +190,7 @@ const ClinicalNodesGraph = ({
       <rect
         x="0"
         y="0"
-        width="1000"
+        width={GRAPH_WIDTH}
         height="500"
         fill="url(#clinicalMajorGrid)"
       />
@@ -193,7 +199,7 @@ const ClinicalNodesGraph = ({
       <line
         x1="0"
         y1="500"
-        x2="1000"
+        x2={GRAPH_WIDTH}
         y2="500"
         stroke={colorPrimary}
         strokeWidth="1"
@@ -234,8 +240,8 @@ const ClinicalNodesGraph = ({
       })}
 
       {/* X-Axis Labels */}
-      {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((age) => {
-        const x = age * 10;
+      {[0, 10, 20, 30, 40, 50, 60, 70, 80, MAX_AGE].map((age) => {
+        const x = ageToX(age);
         return (
           <g key={`x-${age}`}>
             <line
@@ -273,7 +279,7 @@ const ClinicalNodesGraph = ({
         {axisYLabel}
       </text>
       <text
-        x="500"
+        x={GRAPH_WIDTH / 2}
         y="555"
         fill={colorSecondary}
         fontSize="20"
@@ -290,16 +296,16 @@ const ClinicalNodesGraph = ({
           <line
             x1="0"
             y1={500 - activeNode.y * 5}
-            x2="1000"
+            x2={GRAPH_WIDTH}
             y2={500 - activeNode.y * 5}
             stroke={colorSecondary}
             strokeWidth="1"
             strokeDasharray="3 3"
           />
           <line
-            x1={activeNode.x * 10}
+            x1={ageToX(activeNode.x)}
             y1="0"
-            x2={activeNode.x * 10}
+            x2={ageToX(activeNode.x)}
             y2="500"
             stroke={colorSecondary}
             strokeWidth="1"
@@ -321,7 +327,7 @@ const ClinicalNodesGraph = ({
 
       {/* Interactive Control Nodes - Minimalist Circles */}
       {nodes.map((node) => {
-        const x = node.x * 10;
+        const x = ageToX(node.x);
         const y = 500 - node.y * 5;
         const isDragging = draggingNodeId === node.id;
         const isHover = hoverNodeId === node.id || isDragging;
