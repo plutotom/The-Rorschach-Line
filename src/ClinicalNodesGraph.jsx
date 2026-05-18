@@ -226,7 +226,7 @@ const ClinicalNodesGraph = ({
               stroke={colorPrimary}
               strokeWidth="1"
             />
-            <text
+            {/* <text
               x="-12"
               y={y + 4}
               fill={colorSecondary}
@@ -234,7 +234,7 @@ const ClinicalNodesGraph = ({
               textAnchor="end"
             >
               {h}
-            </text>
+            </text> */}
           </g>
         );
       })}
